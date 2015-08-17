@@ -15,7 +15,8 @@
  
  var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
 	db.transaction(function(tx){
-		tx.executeSql('CREATE TABLE IF NOT EXISTS user(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, created unique, email, username, password)');
+		//tx.executeSql('DROP TABLE IF EXISTS user');
+		tx.executeSql('CREATE TABLE IF NOT EXISTS user(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, created unique, email, username UNIQUE, password)');
 	});
 
 	$('document').ready(function(){
@@ -107,7 +108,7 @@
     	 <input type="button" id="loginbtn" value="Login">
      
      <a href="#profile"> profile </a>
-    </div>  
+  </div>  
 </div>
 
 <!--- End of login page --->
@@ -149,8 +150,15 @@
      	<input name="signupbtn" type="button" id="signupbtn" value="Sign Up">
         
         <a href="#signup2"> Sign up 2 </a>
+        
+        <script>
+		
+		var session_username = $('#username');
+		var session_password = $('#password');
+		
+		</script>
      
-    </div>  
+  </div>  
 </div>
 
 <!--- End of signup page --->
@@ -169,25 +177,36 @@
     </div>
     
     <div data-role="content" align="center">
-	<div id="dropbox" class="media-drop-placeholder" style="width: 200px; height: 200px">
+	<div id="dropbox" class="media-drop-placeholder" style="width: 250px; height: 250px">
     
-    <img id="preview">
+    <img id="profilepic" src="#" height="200px" width="200px" />
     
     <span class="media-drop-placeholder-title">Upload profile picture</span>
 
     </div>
     
-    <input type="file" accept="image/*" id="browseppic">
+    <br>
+    <form id="form1" runat="server">
+    <input type='file' id="imgInp" />
+    </form>
     
-    <button id="startupload"> Upload </button>
-    
+ 	<input type="button" id="uploadprofilepic" value="Upload"> 
+	
+
     <script>
 	
-	$("#startupload").click(function(){
-		
-		
-	});
-	
+	function readURL(input) {
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#profilepic').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 	</script>
    
 
@@ -278,6 +297,26 @@
 
 <!--- End of profile page --->
 
+<table width="200" border="1">
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+
+
 <script>
 
 $("#signupbtn").click(function(){
@@ -289,7 +328,7 @@ $("#signupbtn").click(function(){
 	
 	if(password == cfm_passwd){
 	function populateDB(tx){
-			tx.executeSql('CREATE TABLE IF NOT EXISTS user(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, created unique, email, username, password)');
+			tx.executeSql('CREATE TABLE IF NOT EXISTS user(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, created unique, email, username UNIQUE, password)');
 			tx.executeSql('INSERT INTO user(created, email, username, password) VALUES(?, ?, ?, ?)', [created, email, username, password]);
 			}
 		function errorCB(err){
@@ -305,8 +344,32 @@ $("#signupbtn").click(function(){
 				alert("Password confirmation is wrong");
 			
 			}
+			
+		$("#imgInp").change(function(){
+    		readURL(this);
+			$("#uploadprofilepic").click(function(){
+			var profilepic =  $('#profilepic').attr('src');
+		
+			function populateDB(tx){
+				tx.executeSql('CREATE TABLE IF NOT EXISTS userimage(username PRIMARY KEY, image)');
+				tx.executeSql('INSERT INTO userimage(image,username) VALUES(?,?)', [profilepic, username]);
+			}
+		
+			function errorCB(err){
+				alert("error");
+			}
+			function successCB(){
+				$.mobile.changePage( $("#profile"), "slide", true, true);
+			}
+		
+			var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
+			db.transaction(populateDB,errorCB,successCB);
 		
 	});
+});
+		
+		
+});
 	
 	
 $("#loginbtn").click(function(){
@@ -336,8 +399,5 @@ $("#loginbtn").click(function(){
 	});
 });
 </script>
-
-
-
 </body>
 </html>
