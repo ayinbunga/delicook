@@ -1,0 +1,343 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>DeliCook App</title>
+
+<link rel="stylesheet" type="text/css" href="include/style.css">
+<link href="jquery-mobile/jquery.mobile-1.0.min.css" rel="stylesheet" type="text/css"/>
+
+<script src="jquery-mobile/jquery-1.6.4.min.js" type="text/javascript"></script>
+<script src="jquery-mobile/jquery.mobile-1.0.min.js" type="text/javascript"></script>
+
+<script>
+ var db = null;
+ 
+ var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
+	db.transaction(function(tx){
+		tx.executeSql('CREATE TABLE IF NOT EXISTS user(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, created unique, email, username, password)');
+	});
+
+	$('document').ready(function(){
+		var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
+		
+	db.transaction(function(tx){
+			tx.executeSql('SELECT * FROM user', [], querySuccess, errorCB);	
+	});
+	
+	function querySuccess(tx, results){
+			var len = results.rows.length;
+				if(len > 0){
+					
+					console.log("Currently have "+len+" users registered");
+					}
+				
+				else{
+					console.log("No users registered yet");
+				}
+				
+		}
+		function errorCB(err){
+		 alert("Error" + err.code);
+		}
+	});
+
+</script>
+
+
+
+</head> 
+<body> 
+
+<!--- Start of index page --->
+
+<div data-role="page" id="index">
+	
+    <div data-role="header">
+    <table>
+    <tr> <td rowspan="2"> <img src="images/icon/Final logo DeliCook.JPG" width="71" height="68"> </td> 
+    </tr>
+    <tr> <td rowspan="2"> </td> </tr>
+    </table>
+    </div>
+    
+    <div data-role="content" align="center">
+    
+    	<p>&nbsp;</p>
+        <img src="images/icon/DeliCookTitle.png" width="300" height="120">
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <a href="#login"> <button>Login</button> </a>
+		<a href="#signup"> <button>New Account</button> </a>
+      	
+    	
+	</div>
+</div>
+
+<!--- End of index page --->
+
+
+
+<!--- Start of login page --->
+
+<div data-role="page" id="login">
+
+	<div data-role="header">
+    <table>
+    <tr> <td rowspan="2"> <img src="images/icon/Final logo DeliCook.JPG" width="71" height="68"> </td> 
+    </tr>
+    <tr> <td rowspan="2"> </td> </tr>
+    </table>
+    </div>
+    
+   <div data-role="content" align="center">
+   <p>&nbsp;</p>
+   
+     	<img src="images/icon/DeliCookTitle.png" width="300" height="120">
+       	
+        <div data-role="fieldcontain" align="center">
+     	 <input type="text" id="loginemail" placeholder="E-mail"/>
+      	</div>
+
+    
+   		<div data-role="fieldcontain" align="center">
+      	  <input type="password" id="loginpassword" placeholder="Password"/>
+    	</div>
+   
+    	 <input type="button" id="loginbtn" value="Login">
+     
+     <a href="#profile"> profile </a>
+    </div>  
+</div>
+
+<!--- End of login page --->
+
+
+<!--- Start of signup page --->
+
+<div data-role="page" id="signup">
+
+	<div data-role="header">
+    <table>
+    <tr> <td rowspan="2"> <img src="images/icon/Final logo DeliCook.JPG" width="71" height="68"> </td> 
+    </tr>
+    <tr> <td rowspan="2"> <h2> Sign Up </h2></td> </tr>
+    </table>
+    </div>
+    
+   <div data-role="content" align="center">
+       	 
+    
+    	<div data-role="fieldcontain" align="center">
+      	 <input type="text" id="username" placeholder="Username"/>
+    	</div>
+
+    
+    	<div data-role="fieldcontain" align="center">
+      	 <input type="text" id="email" placeholder="E-mail"/>
+      	</div>
+
+    
+    	<div data-role="fieldcontain" align="center">
+      	 <input type="password" id="password" placeholder="Password"/>
+    	</div>
+
+     	<div data-role="fieldcontain" align="center">
+      	 <input type="password" id="cfm_password" placeholder="Confirm Password"/>
+    	</div>
+
+     	<input name="signupbtn" type="button" id="signupbtn" value="Sign Up">
+        
+        <a href="#signup2"> Sign up 2 </a>
+     
+    </div>  
+</div>
+
+<!--- End of signup page --->
+
+
+<!--- Start of signup2 page --->
+
+<div data-role="page" id="signup2">
+
+	<div data-role="header">
+    <table>
+    <tr> <td rowspan="2"> <img src="images/icon/Final logo DeliCook.JPG" width="71" height="68"> </td> 
+    </tr>
+    <tr> <td rowspan="2"> <h2> Sign Up </h2></td> </tr>
+    </table>
+    </div>
+    
+    <div data-role="content" align="center">
+	<div id="dropbox" class="media-drop-placeholder" style="width: 200px; height: 200px">
+    
+    <img id="preview">
+    
+    <span class="media-drop-placeholder-title">Upload profile picture</span>
+
+    </div>
+    
+    <input type="file" accept="image/*" id="browseppic">
+    
+    <button id="startupload"> Upload </button>
+    
+    <script>
+	
+	$("#startupload").click(function(){
+		
+		
+	});
+	
+	</script>
+   
+
+	</div>
+</div>
+
+<!--- End of signup2 page --->
+
+
+<!--- Start of profile page --->
+
+<div data-role="page" id="profile">
+
+	<div data-role="header">
+    <table>
+    <tr> <td rowspan="2"> <img src="images/icon/Final logo DeliCook.JPG" width="71" height="68"> </td> 
+    </tr>
+    <tr> <td rowspan="2"> <h2> Sign Up </h2></td> </tr>
+    </table>
+    </div>
+    
+	<div>
+    	<div>
+		<table width="100%" class="table" align="center">
+
+		<tr>
+		<td> <font size="+2">14</font> </td>
+		<td> <font size="+2">69</font> </td>
+		<td> <font size="+2">158</font> </td>
+		<td> <font size="+2">3</font> </td>
+		</tr>
+
+		<tr>
+		<td> recipes </td>
+		<td> followers </td>
+		<td> following </td>
+		<td> groups </td>
+		</tr>
+		</table>
+	</div>
+  
+  
+  	<div data-role="content" class="content" align="justify">
+  	<table width="100%">
+  	<tr>
+ 	<td> <img src="images/masakan/IMGP3992.JPG" width="148" height="128"> </td>
+  	<td> <img src="images/masakan/crepe-lagi.jpg" width="148" height="128"></td>
+ 	 </tr>
+  
+  	<tr>
+  	<td> <img src="images/masakan/nasi_tomato_ayam_merah.JPG" width="148" height="128"></td>
+  	<td> <img src="images/masakan/cornflakes-madu.jpg" width="148" height="128"></td>
+  	</tr>
+  
+  	<tr>
+  	<td><img src="images/masakan/Biskut-Raya-Cheese-tart.jpg" width="148" height="128"></td>
+  	<td><img src="images/masakan/pasta-010.jpg" width="148" height="128"></td>
+  	</tr>
+  
+  	<tr>
+  	<td><img src="images/masakan/6357206645_934471c4b6.jpg" width="148" height="128"></td>
+  	<td><img src="images/masakan/ADS12526__2079_Tat_1.jpg" width="148" height="128"></td>
+  	</tr>
+ 
+  	</table>
+    </div>
+  
+  	<div id="panel" class="panel"> 
+  	<table width="100%">
+  	<tr>
+  	<td align="center">
+  	<img src="images/icon/home icon.png" width="57" height="57">
+  	</td>  
+  	<td align="center">
+  	<img src="images/icon/Contact-icon.png" width="57" height="57">
+ 	</td>
+  	<td align="center">
+  	<img src="images/icon/food_dining_icon.png" width="57" height="57">
+  	</td>
+  	<td align="center"> <a href="#group"> <img src="images/icon/people-icon.png" width="57" height="57"> </a>
+  	</td>
+  	</tr>
+  	</table>
+  	</div>
+
+	</div>
+</div>
+
+<!--- End of profile page --->
+
+<script>
+
+$("#signupbtn").click(function(){
+	var email = $("#email").val();
+	var password = $("#password").val();
+	var username = $("#username").val();
+	var cfm_passwd = $("#cfm_password").val();
+	var created = $.now();
+	
+	if(password == cfm_passwd){
+	function populateDB(tx){
+			tx.executeSql('CREATE TABLE IF NOT EXISTS user(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, created unique, email, username, password)');
+			tx.executeSql('INSERT INTO user(created, email, username, password) VALUES(?, ?, ?, ?)', [created, email, username, password]);
+			}
+		function errorCB(err){
+			alert("error");
+			}
+		function successCB(){
+			$.mobile.changePage( $("#signup2"), "slide", true, true);
+		}
+		var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
+		db.transaction(populateDB,errorCB,successCB);
+		
+		}else{
+				alert("Password confirmation is wrong");
+			
+			}
+		
+	});
+	
+	
+$("#loginbtn").click(function(){
+	var email = $("#loginemail").val();
+	var password = $("#loginpassword").val();
+	
+	$('document').ready(function(){
+		var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
+	    db.transaction(function(tx){
+			tx.executeSql('SELECT * FROM user WHERE email=? and password=?', [email,password], querySuccess, errorCB);
+		});
+			
+		function querySuccess(tx, results){
+			var len = results.rows.length;
+				if(len > 0){
+						$.mobile.changePage( $("#profile"), "slide", true, true);
+				}
+				else {
+					alert("Wrong email or password")
+				}
+				
+		}
+		
+		function errorCB(err){
+		 alert("Error" + err.code);
+		}
+	});
+});
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns = "http://www.w3.org/ns/widgets"
+    xmlns:gap = "http://phonegap.com/ns/1.0"
+    id        = "com.titanium.delicook"
+    version   = "1.0.0">
+
+<name>DeliCook</name>
+
+<icon src="icon.png" />
+
+<description>
+DeliCook. A network for cooking.
+</description>
+
+<author href="https://example.com" email="you@example.com">
+Titanium
+</author>
+
+</widget>
