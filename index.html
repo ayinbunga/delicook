@@ -6,9 +6,11 @@
 
 <link rel="stylesheet" type="text/css" href="include/style.css">
 <link href="jquery-mobile/jquery.mobile-1.0.min.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="sweetalert/sweetalert.css">
 
 <script src="jquery-mobile/jquery-1.6.4.min.js" type="text/javascript"></script>
 <script src="jquery-mobile/jquery.mobile-1.0.min.js" type="text/javascript"></script>
+<script src="sweetalert/sweetalert-dev.js"></script>
 
 <script>
 //added some lines
@@ -17,6 +19,7 @@
  var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
 	db.transaction(function(tx){
 		//tx.executeSql('DROP TABLE IF EXISTS user');
+		//tx.executeSql('DROP TABLE IF EXISTS userimage');
 		tx.executeSql('CREATE TABLE IF NOT EXISTS user(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, created unique, email, username UNIQUE, password)');
 	});
 
@@ -98,12 +101,12 @@
      	<img src="images/icon/DeliCookTitle.png" width="300" height="120">
        	
         <div data-role="fieldcontain" align="center">
-     	 <input type="text" id="loginemail" placeholder="E-mail"/>
+     	 <input type="text" id="loginemail" placeholder="E-mail" required/>
       	</div>
 
     
    		<div data-role="fieldcontain" align="center">
-      	  <input type="password" id="loginpassword" placeholder="Password"/>
+      	  <input type="password" id="loginpassword" placeholder="Password" required/>
     	</div>
    
     	 <input type="button" id="loginbtn" value="Login">
@@ -128,36 +131,29 @@
     </div>
     
    <div data-role="content" align="center">
-       	 
     
     	<div data-role="fieldcontain" align="center">
-      	 <input type="text" id="username" placeholder="Username"/>
+      	 <input type="text" id="username" placeholder="Username" required="required"/>
     	</div>
 
     
     	<div data-role="fieldcontain" align="center">
-      	 <input type="text" id="email" placeholder="E-mail"/>
+      	 <input type="text" id="email" placeholder="E-mail" required="required"/>
       	</div>
 
     
     	<div data-role="fieldcontain" align="center">
-      	 <input type="password" id="password" placeholder="Password"/>
+      	 <input type="password" id="password" placeholder="Password" required="required"/>
     	</div>
 
      	<div data-role="fieldcontain" align="center">
-      	 <input type="password" id="cfm_password" placeholder="Confirm Password"/>
+      	 <input type="password" id="cfm_password" placeholder="Confirm Password" required="required"/>
     	</div>
 
      	<input name="signupbtn" type="button" id="signupbtn" value="Sign Up">
         
-        <a href="#signup2"> Sign up 2 </a>
         
-        <script>
-		
-		var session_username = $('#username');
-		var session_password = $('#password');
-		
-		</script>
+        <a href="#signup2"> Sign up 2 </a>
      
   </div>  
 </div>
@@ -191,7 +187,9 @@
     <input type='file' id="imgInp" />
     </form>
     
- 	<input type="button" id="uploadprofilepic" value="Upload"> 
+ 	<input type="button" id="uploadprofilepic" value="Register"> 
+    
+    <a href="#profile">Profile</a>
 	
 
     <script>
@@ -223,7 +221,7 @@
 
 	<div data-role="header">
     <table>
-    <tr> <td rowspan="2"> <img src="images/icon/Final logo DeliCook.JPG" width="71" height="68"> </td> 
+    <tr> <td rowspan="2"> <img src="#" id="pic" width="71" height="68"> </td> 
     </tr>
     <tr> <td rowspan="2"> <h2> Sign Up </h2></td> </tr>
     </table>
@@ -251,46 +249,6 @@
   
   
   	<div data-role="content" class="content" align="justify">
-  	<table width="100%">
-  	<tr>
- 	<td> <img src="images/masakan/IMGP3992.JPG" width="148" height="128"> </td>
-  	<td> <img src="images/masakan/crepe-lagi.jpg" width="148" height="128"></td>
- 	 </tr>
-  
-  	<tr>
-  	<td> <img src="images/masakan/nasi_tomato_ayam_merah.JPG" width="148" height="128"></td>
-  	<td> <img src="images/masakan/cornflakes-madu.jpg" width="148" height="128"></td>
-  	</tr>
-  
-  	<tr>
-  	<td><img src="images/masakan/Biskut-Raya-Cheese-tart.jpg" width="148" height="128"></td>
-  	<td><img src="images/masakan/pasta-010.jpg" width="148" height="128"></td>
-  	</tr>
-  
-  	<tr>
-  	<td><img src="images/masakan/6357206645_934471c4b6.jpg" width="148" height="128"></td>
-  	<td><img src="images/masakan/ADS12526__2079_Tat_1.jpg" width="148" height="128"></td>
-  	</tr>
- 
-  	</table>
-    </div>
-  
-  	<div id="panel" class="panel"> 
-  	<table width="100%">
-  	<tr>
-  	<td align="center">
-  	<img src="images/icon/home icon.png" width="57" height="57">
-  	</td>  
-  	<td align="center">
-  	<img src="images/icon/Contact-icon.png" width="57" height="57">
- 	</td>
-  	<td align="center">
-  	<img src="images/icon/food_dining_icon.png" width="57" height="57">
-  	</td>
-  	<td align="center"> <a href="#group"> <img src="images/icon/people-icon.png" width="57" height="57"> </a>
-  	</td>
-  	</tr>
-  	</table>
   	</div>
 
 	</div>
@@ -326,25 +284,33 @@ $("#signupbtn").click(function(){
 	var username = $("#username").val();
 	var cfm_passwd = $("#cfm_password").val();
 	var created = $.now();
+	var NULL = "";
 	
-	if(password == cfm_passwd){
-	function populateDB(tx){
-			tx.executeSql('CREATE TABLE IF NOT EXISTS user(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, created unique, email, username UNIQUE, password)');
-			tx.executeSql('INSERT INTO user(created, email, username, password) VALUES(?, ?, ?, ?)', [created, email, username, password]);
-			}
-		function errorCB(err){
-			alert("error");
-			}
-		function successCB(){
-			$.mobile.changePage( $("#signup2"), "slide", true, true);
-		}
-		var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
-		db.transaction(populateDB,errorCB,successCB);
+	if ((email != NULL) && (username != NULL) && (password != NULL) && (cfm_passwd != NULL)) {
+			if(password == cfm_passwd){
+					function populateDB(tx){
+						tx.executeSql('CREATE TABLE IF NOT EXISTS user(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, created unique, email, username UNIQUE, password)');
+						tx.executeSql('INSERT INTO user(created, email, username, password) VALUES(?, ?, ?, ?)', [created, email, username, password]);
+					}
+					function errorCB(err){
+						alert("error");
+					}
 		
-		}else{
-				alert("Password confirmation is wrong");
-			
-			}
+					function successCB(){
+						$.mobile.changePage( $("#signup2"), "slide", true, true);
+					}
+				
+					var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
+					db.transaction(populateDB,errorCB,successCB);
+		
+				}
+		 			else {
+						swal("Invalid input!", "Wrong password confirmation!", "warning") }
+		 		}
+					else {
+						swal("Invalid input!", "Please fill up all the fields!", "warning") }
+				
+		
 			
 		$("#imgInp").change(function(){
     		readURL(this);
@@ -360,6 +326,7 @@ $("#signupbtn").click(function(){
 				alert("error");
 			}
 			function successCB(){
+				swal("Welcome!", "You are now a part of Delicook community", "success")
 				$.mobile.changePage( $("#profile"), "slide", true, true);
 			}
 		
@@ -376,28 +343,30 @@ $("#signupbtn").click(function(){
 $("#loginbtn").click(function(){
 	var email = $("#loginemail").val();
 	var password = $("#loginpassword").val();
-	
-	$('document').ready(function(){
-		var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
-	    db.transaction(function(tx){
-			tx.executeSql('SELECT * FROM user WHERE email=? and password=?', [email,password], querySuccess, errorCB);
-		});
-			
-		function querySuccess(tx, results){
-			var len = results.rows.length;
-				if(len > 0){
-						$.mobile.changePage( $("#profile"), "slide", true, true);
-				}
-				else {
-					alert("Wrong email or password")
-				}
-				
-		}
+	var NULL = "";
+
+	if ((email != NULL) && (password != NULL)) {
 		
-		function errorCB(err){
-		 alert("Error" + err.code);
-		}
-	});
+		$('document').ready(function(){
+			var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
+	    	
+			db.transaction(function(tx){
+				tx.executeSql('SELECT * FROM user WHERE email=? and password=?', [email,password], querySuccess, errorCB);
+			});
+			
+			function querySuccess(tx, results){
+				var len = results.rows.length;
+					if(len > 0){
+						$.mobile.changePage( $("#profile"), "slide", true, true); }
+				else {
+					swal("Invalid input!", "Wrong email or password", "warning") }
+			}
+		
+			function errorCB(err){
+		 		alert("Error" + err.code);	}
+		});
+	}
+	else { swal("Invalid input!", "Please fill up all the fields!", "warning") }
 });
 </script>
 </body>
