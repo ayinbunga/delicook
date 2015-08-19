@@ -101,7 +101,7 @@
      	<img src="images/icon/DeliCookTitle.png" width="300" height="120">
        	
         <div data-role="fieldcontain" align="center">
-     	 <input type="text" id="loginemail" placeholder="E-mail" required/>
+     	 <input type="text" id="loginusername" placeholder="E-mail" required/>
       	</div>
 
     
@@ -133,21 +133,21 @@
    <div data-role="content" align="center">
     
     	<div data-role="fieldcontain" align="center">
-      	 <input type="text" id="username" placeholder="Username" required="required"/>
+      	 <input type="text" id="username" placeholder="Username" required/>
     	</div>
 
     
     	<div data-role="fieldcontain" align="center">
-      	 <input type="text" id="email" placeholder="E-mail" required="required"/>
+      	 <input type="text" id="email" placeholder="E-mail" required/>
       	</div>
 
     
     	<div data-role="fieldcontain" align="center">
-      	 <input type="password" id="password" placeholder="Password" required="required"/>
+      	 <input type="password" id="password" placeholder="Password" required/>
     	</div>
 
      	<div data-role="fieldcontain" align="center">
-      	 <input type="password" id="cfm_password" placeholder="Confirm Password" required="required"/>
+      	 <input type="password" id="cfm_password" placeholder="Confirm Password" required/>
     	</div>
 
      	<input name="signupbtn" type="button" id="signupbtn" value="Sign Up">
@@ -221,9 +221,9 @@
 
 	<div data-role="header">
     <table>
-    <tr> <td rowspan="2"> <img src="#" id="pic" width="71" height="68"> </td> 
+    <tr> <td rowspan="2"> <img src="#" id="pic" width="71px" height="68px"> </td> 
     </tr>
-    <tr> <td rowspan="2"> <h2> Sign Up </h2></td> </tr>
+    <tr> <td rowspan="2"> <div id="p_usrname"> </div> </td> </tr>
     </table>
     </div>
     
@@ -249,6 +249,7 @@
   
   
   	<div data-role="content" class="content" align="justify">
+    
   	</div>
 
 	</div>
@@ -326,8 +327,8 @@ $("#signupbtn").click(function(){
 				alert("error");
 			}
 			function successCB(){
-				swal("Welcome!", "You are now a part of Delicook community", "success")
-				$.mobile.changePage( $("#profile"), "slide", true, true);
+				swal("Welcome!", "You are now a part of Delicook community! You may start by logging in!", "success")
+				$.mobile.changePage( $("#login"), "slide", true, true);
 			}
 		
 			var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
@@ -341,17 +342,17 @@ $("#signupbtn").click(function(){
 	
 	
 $("#loginbtn").click(function(){
-	var email = $("#loginemail").val();
+	var username = $("#loginusername").val();
 	var password = $("#loginpassword").val();
 	var NULL = "";
 
-	if ((email != NULL) && (password != NULL)) {
+	if ((username != NULL) && (password != NULL)) {
 		
 		$('document').ready(function(){
 			var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
 	    	
 			db.transaction(function(tx){
-				tx.executeSql('SELECT * FROM user WHERE email=? and password=?', [email,password], querySuccess, errorCB);
+				tx.executeSql('SELECT * FROM user WHERE username=? and password=?', [username,password], querySuccess, errorCB);
 			});
 			
 			function querySuccess(tx, results){
@@ -359,7 +360,7 @@ $("#loginbtn").click(function(){
 					if(len > 0){
 						$.mobile.changePage( $("#profile"), "slide", true, true); }
 				else {
-					swal("Invalid input!", "Wrong email or password", "warning") }
+					swal("Invalid input!", "Wrong username or password", "warning") }
 			}
 		
 			function errorCB(err){
@@ -367,6 +368,30 @@ $("#loginbtn").click(function(){
 		});
 	}
 	else { swal("Invalid input!", "Please fill up all the fields!", "warning") }
+	
+	//displaying the profile image
+	
+	$('document').ready(function(){
+			var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
+	    	
+			db.transaction(function(tx){
+				tx.executeSql('SELECT * FROM userimage WHERE username=?', [username], querySuccess, errorCB);
+			});
+			
+			function querySuccess(tx, results){
+				var len = results.rows.length;
+				if(len > 0){
+					for(i = 0; i < len; i++){
+						var url = results.rows.item(i).image;
+						$('#pic').attr('src', url);
+						$("#p_usrname").append("<h2>"+results.rows.item(i).username)+"</h2>";
+					}
+				}
+		}
+			function errorCB(err){
+		 		alert("Error" + err.code);	}
+		});
+
 });
 </script>
 </body>
