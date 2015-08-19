@@ -1,0 +1,40 @@
+git init
+
+# create new file using editor (sublime, notepad, dreamweaver etc)
+
+git add index.php
+
+git status
+
+git commit -m "some comment"
+
+git config --global user.name "AmniMuin"
+git config --global user.email "amnimuin@yahoo.com"
+
+git commit -m "some description.."
+
+git log (log file yg telah dibuat)
+
+git diff (edit kat file kita, pastu tekan git diff, dia akan tunjuk any differences)
+
+git push origin master
+
+git branch (nk tgk berapa byk branch kita ada dlm github)
+
+git checkout -b newbranch (untuk tukaq ke branch baru: newbranch tu nama branch baru)
+
+git checkout master (untuk kembali ke branch lagi satu: master tu nama branch)
+
+----------------------
+# kalau nak edit file dan upload apa yg kita edit kat guthub.com
+
+1) edit kat file php kita apa2
+
+2) git add namafilekita.php
+
+3) git commit -m "description editing kita"
+
+4) git push origin master
+
+5) refresh github.com kita
+
