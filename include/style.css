@@ -45,7 +45,7 @@
 
 .media-drop-placeholder {
     display: table-cell;
-    background-color: #e1e1e8;
+	background-color: #e1e1e8;
     border: 3px solid #e1e1e8;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -116,5 +116,7 @@
 .photo-placeholder img {
     box-shadow: 0 2px 0 rgba(0, 0, 0, .2);
 }
+
+
 
 
