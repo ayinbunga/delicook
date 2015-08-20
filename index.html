@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
+
 <title>DeliCook App</title>
 
 <link rel="stylesheet" type="text/css" href="include/style.css">
@@ -20,7 +21,9 @@
 	db.transaction(function(tx){
 		//tx.executeSql('DROP TABLE IF EXISTS user');
 		//tx.executeSql('DROP TABLE IF EXISTS userimage');
+		//tx.executeSql('DROP TABLE IF EXISTS recipes');
 		tx.executeSql('CREATE TABLE IF NOT EXISTS user(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, created unique, email, username UNIQUE, password)');
+		tx.executeSql('CREATE TABLE IF NOT EXISTS recipes(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, username, title, recipe, recipe_img)');
 	});
 
 	$('document').ready(function(){
@@ -99,9 +102,9 @@
    <p>&nbsp;</p>
    
      	<img src="images/icon/DeliCookTitle.png" width="300" height="120">
-       	
+       	<form name="loginform" runat="server">
         <div data-role="fieldcontain" align="center">
-     	 <input type="text" id="loginusername" placeholder="E-mail" required/>
+     	 <input type="text" name="loginusername" id="loginusername" placeholder="Username" required/>
       	</div>
 
     
@@ -110,8 +113,10 @@
     	</div>
    
     	 <input type="button" id="loginbtn" value="Login">
+         </form>
      
      <a href="#profile"> profile </a>
+     
   </div>  
 </div>
 
@@ -206,6 +211,10 @@
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+	$("#imgInp").change(function(){
+    		readURL(this);
+	});
 	</script>
    
 
@@ -249,7 +258,27 @@
   
   
   	<div data-role="content" class="content" align="justify">
+    <div align="center"> <button id="addnew"> + new recipe </button> </div>
+    <div id="alltherecipes" align="justify"> </div>
+    <div id="norecipes" align="center"> </div> 
+  	</div>
     
+    <div id="panel" class="panel"> 
+  	<table width="100%">
+  	<tr>
+  	<td align="center">
+  	<img src="images/icon/home icon.png" width="57" height="57">
+  	</td>  
+  	<td align="center">
+  	<img src="images/icon/Contact-icon.png" width="57" height="57">
+ 	</td>
+  	<td align="center">
+  	<img src="images/icon/food_dining_icon.png" width="57" height="57">
+  	</td>
+  	<td align="center"> <a href="#people"> <img src="images/icon/people-icon.png" width="57" height="57"> </a>
+  	</td>
+  	</tr>
+  	</table>
   	</div>
 
 	</div>
@@ -257,23 +286,74 @@
 
 <!--- End of profile page --->
 
-<table width="200" border="1">
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-</table>
+<!--- Start of addrecipe page --->
+
+<div data-role="page" id="addrecipe">
+
+	<div data-role="header">
+    <table>
+    <tr> <td rowspan="2"> <img src="images/icon/Final logo DeliCook.JPG" width="71" height="68"> </td> 
+    </tr>
+    <tr> <td rowspan="2"> <div id="title"> </div> </td> </tr>
+    </table>
+    </div>
+    
+    
+   <div data-role="content" align="center" class="content">	
+   <!-- <input type="text" id="recipe_title" placeholder="Recipe Name"> -->
+	<div id="dropbox" class="media-drop-placeholder" style="width: 300px; height: 100px">
+    <img id="recipeimg" src="#" height="150px" width="250px"/>
+    <span class="media-drop-placeholder-title">
+    <form id="addrecipeform" runat="server">
+    <input type='file' id="up_recipeimg" /></form></span>
+    </div>
+    <br>
+    <textarea cols="40" rows="8" name="recipe" id="recipe" placeholder="Type in your recipe here.."></textarea>
+    <input type="button" id="addrecipebutton" value="Submit">
+    <br>
+    
+	</div>
+    <div id="panel" class="panel"> 
+  	<table width="100%">
+  	<tr>
+  	<td align="center">
+  	<img src="images/icon/home icon.png" width="57" height="57">
+  	</td>  
+  	<td align="center"> <a href="#profile">
+  	<img src="images/icon/Contact-icon.png" width="57" height="57"> </a>
+ 	</td>
+  	<td align="center">
+  	<img src="images/icon/food_dining_icon.png" width="57" height="57">
+  	</td>
+  	<td align="center">  <img src="images/icon/people-icon.png" width="57" height="57"> 
+  	</td>
+  	</tr>
+  	</table>
+  	</div>
+    
+     <script>
+	
+	function readURL2(input) {
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#recipeimg').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+	$("#up_recipeimg").change(function(){
+    		readURL2(this);
+	});
+	
+	</script>
+</div>
+
+<!--- End of addrecipe page --->
 
 
 
@@ -312,9 +392,6 @@ $("#signupbtn").click(function(){
 						swal("Invalid input!", "Please fill up all the fields!", "warning") }
 				
 		
-			
-		$("#imgInp").change(function(){
-    		readURL(this);
 			$("#uploadprofilepic").click(function(){
 			var profilepic =  $('#profilepic').attr('src');
 		
@@ -334,17 +411,18 @@ $("#signupbtn").click(function(){
 			var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
 			db.transaction(populateDB,errorCB,successCB);
 		
-	});
 });
 		
 		
 });
-	
-	
+
+
 $("#loginbtn").click(function(){
 	var username = $("#loginusername").val();
 	var password = $("#loginpassword").val();
 	var NULL = "";
+	
+	localStorage.setItem("username", username);
 
 	if ((username != NULL) && (password != NULL)) {
 		
@@ -358,7 +436,9 @@ $("#loginbtn").click(function(){
 			function querySuccess(tx, results){
 				var len = results.rows.length;
 					if(len > 0){
-						$.mobile.changePage( $("#profile"), "slide", true, true); }
+						$.mobile.changePage( $("#profile"), "slide", true, true);
+						window.location.reload();
+						  }
 				else {
 					swal("Invalid input!", "Wrong username or password", "warning") }
 			}
@@ -369,9 +449,12 @@ $("#loginbtn").click(function(){
 	}
 	else { swal("Invalid input!", "Please fill up all the fields!", "warning") }
 	
-	//displaying the profile image
+});
+
+//displaying the profile image
 	
-	$('document').ready(function(){
+$('document').ready(function(){
+			var username = localStorage.getItem('username');
 			var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
 	    	
 			db.transaction(function(tx){
@@ -392,7 +475,97 @@ $("#loginbtn").click(function(){
 		 		alert("Error" + err.code);	}
 		});
 
+//adding new recipe
+
+$("#addnew").click(function(){
+	var username = localStorage.getItem('username');
+	$.mobile.changePage( $("#addrecipe"), "slide", true, true);
+	swal({  title: "New recipe",
+			text: "Recipe name:",   
+			type: "input",   showCancelButton: true,   
+			closeOnConfirm: false,   animation: "slide-from-top",   
+			inputPlaceholder: "Your recipe name" }, 
+			
+			function(inputValue){   
+				if (inputValue === false) return false;      
+					if (inputValue === "") {     
+					swal.showInputError("Your recipe must have a name");     
+					return false   }      
+					swal("Nice!", "Your new recipe is " + inputValue, "success");
+					$("#title").append("<h2>"+inputValue+"</h2>");
+					
+					$("#addrecipebutton").click(function(){
+						var recipe = $("#recipe").val();
+						var recipe_img =  $('#recipeimg').attr('src');
+						var NULL = "";
+							if (recipe != NULL) {
+								function populateDB(tx){
+									tx.executeSql('CREATE TABLE IF NOT EXISTS recipes(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, username, title, recipe, recipe_img)');
+									tx.executeSql('INSERT INTO recipes(username, title, recipe, recipe_img) VALUES(?, ?, ?, ?)', [username, inputValue, recipe, recipe_img]);
+					}
+					function errorCB(err){
+						alert("error");
+					}
+		
+					function successCB(){
+						swal({   
+								title: "Sweet!",   
+								text: "Thanks for sharing us your recipe",   
+								imageUrl: "images/thumbs-up.jpg",     
+								confirmButtonColor: "#FF6820",   
+								confirmButtonText: "OK",   
+								closeOnConfirm: false }, 
+								
+								function(){   
+								$.mobile.changePage( $("#profile"), "slide", true, true); 
+								window.location.reload(); });
+						
+						
+					}
+					
+				
+					var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
+					db.transaction(populateDB,errorCB,successCB);
+		
+				}
+				else {
+						swal("Invalid input!", "Please fill up all the fields!", "warning") }
+					
+		
 });
+					
+	});
+});
+
+
+//diplaying all uploaded recipes
+
+$('document').ready(function(){
+			var username = localStorage.getItem('username');
+			var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
+	    	
+			db.transaction(function(tx){
+				tx.executeSql('SELECT * FROM recipes WHERE username=?', [username], querySuccess, errorCB);
+			});
+			
+			function querySuccess(tx, results){
+				var len = results.rows.length;
+				if(len > 0){
+					$("#alltherecipes").append("<table border=3><tr>");
+					for(i = 0; i < len; i++){
+						$("#alltherecipes").append("<td><img src='"+results.rows.item(i).recipe_img+"' height='100px' width='100px'></td>");
+						
+					}
+				}
+				else {
+					$("#norecipes").append("<br><br><font color=#A4A4A4> No recipes uploaded yet. </font>");
+				}
+		}
+			function errorCB(err){
+		 		alert("Error" + err.code);	}
+		});
+
+//});
 </script>
 </body>
 </html>
