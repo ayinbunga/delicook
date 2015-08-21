@@ -16,7 +16,6 @@
 <script>
 //added some lines
  var db = null;
- 
  var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
 	db.transaction(function(tx){
 		//tx.executeSql('DROP TABLE IF EXISTS user');
@@ -26,7 +25,7 @@
 		tx.executeSql('CREATE TABLE IF NOT EXISTS recipes(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, username, title, recipe, recipe_img)');
 	});
 
-	$('document').ready(function(){
+$('document').ready(function(){
 		var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
 		
 	db.transaction(function(tx){
@@ -52,10 +51,55 @@
 
 </script>
 
+<script>
+
+function checkSession() {
+
+var username = localStorage.getItem('username');
+
+if (username != ""){
+	$.mobile.changePage( $("#profile"), "slide", true, true); 
+}
+else {
+	$.mobile.changePage( $("#index"), "slide", true, true); 
+}
+
+}
+
+
+</script>
+
 
 
 </head> 
 <body> 
+
+<!--- Start of first page --->
+
+<div data-role="page" id="first">
+	
+    <div data-role="header">
+    <table>
+    <tr> <td rowspan="2"> <img src="images/icon/Final logo DeliCook.JPG" width="71" height="68"> </td> 
+    </tr>
+    <tr> <td rowspan="2"> </td> </tr>
+    </table>
+    </div>
+    
+    <div data-role="content" align="center">
+    
+    	<p>&nbsp;</p>
+        <img src="images/icon/DeliCookTitle.png" width="300" height="120">
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <h2 onClick="checkSession()"> Tap to Enter </h2>
+        <a href="#index"> <h2> index </h2> </a>
+      	
+    	
+	</div>
+</div>
+
+<!--- End of first page --->
 
 <!--- Start of index page --->
 
@@ -261,20 +305,30 @@
   
   	<div data-role="content" class="content" align="justify">
     <div align="center"> <button id="addnew"> + new recipe </button> </div>
-    <div id="alltherecipes" align="justify"> </div>
+    <div id="alltherecipes" align="center"> </div>
     <div id="norecipes" align="center"> </div> 
-    <!-- img id="#testread" src="images/masakan/crepe-lagi.jpg" onClick="SetImageName(this)" -->
+    <h2 onClick="logOutSession()"> Log out </h2>
+    <a href="#people"> <h2> People page </h2> </a>
   	</div>
     
     <script>
-	/*
-	function SetImageName(image) {
-		var name = image.src;
-		alert(name);
-	
+	function logOutSession() {
+		
+	swal({   
+		title: "Are you sure?",     
+		type: "warning",   
+		showCancelButton: true,   
+		confirmButtonColor: "#DD6B55",   
+		confirmButtonText: "Yes",   
+		closeOnConfirm: true }, 
+		
+		function(){   
+			localStorage.setItem("username", "");
+			$.mobile.changePage( $("#first"), "slide", true, true);
+			window.location.reload(); 
+		});
+
 	}
-	*/
-	
 	</script>
  
     
@@ -395,6 +449,49 @@
 </div>
 
 <!--- End of viewrecipe page --->
+
+<!--- Start of people page --->
+
+<div data-role="page" id="people">
+	
+    <div data-role="header">
+    <table>
+    <tr> <td rowspan="2"> <img src="images/icon/Final logo DeliCook.JPG" width="71" height="68"> </td> 
+    </tr>
+    <tr> <td rowspan="2"> </td> </tr>
+    </table>
+    </div>
+    
+    <div data-role="content" align="center">
+    <table id="alltheusers" class="table">
+    </table>  	
+    	
+	</div>
+</div>
+
+<!--- End of people page --->
+
+
+<!--- Start of viewuser page --->
+
+<div data-role="page" id="viewuser">
+
+	<div data-role="header">
+    <table>
+    <tr> <td rowspan="2"> <img src="#" id="viewuserimage" width="71" height="68"> </td> 
+    </tr>
+    <tr> <td rowspan="2"> <h2 id="viewusername"></h2> </td> </tr>
+    </table>
+    </div>
+    
+   <div data-role="content" align="center" class="content">
+   <div id="viewalluserrecipes" align="center"> </div>
+    <div id="user_norecipes" align="center"> </div> 
+     
+  </div>  
+</div>
+
+<!--- End of viewuser page --->
 
 
 
@@ -593,7 +690,7 @@ $('document').ready(function(){
 				var len = results.rows.length;
 				if(len > 0){
 					for(i = 0; i < len; i++){
-						$("#alltherecipes").append("<img onClick='ViewRecipe(this)' src='"+results.rows.item(i).recipe_img+"' height='100px' width='100px'>");
+						$("#alltherecipes").append("<img onClick='ViewRecipe(this)' src='"+results.rows.item(i).recipe_img+"' height='200px' width='200px'>");
 					}
 				}
 				else {
@@ -640,8 +737,87 @@ function ViewRecipe(image) {
 
 }
 
+//displaying all users
 
-//});
+$('document').ready(function(){
+			var username = localStorage.getItem('username');
+			var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
+	    	
+			db.transaction(function(tx){
+				tx.executeSql('SELECT * FROM userimage', [], querySuccess, errorCB);
+			});
+			
+			function querySuccess(tx, results){
+				var len = results.rows.length;
+				if(len > 0){
+					for(i = 0; i < len; i++){
+						var current_user = results.rows.item(i).username;
+						if( current_user != username ) {
+						$("#alltheusers").append("<tr><td><img onClick='ViewUser(this)' src='"+results.rows.item(i).image+"' height='150px' width='150px'></td><td width='150px'><h2>"+results.rows.item(i).username+"</h2></td><td width='200px'><input type='button' value='Follow'></td></tr>"); }
+					}
+				
+				}
+				else {
+					$("#norecipes").append("<br><br><font color=#A4A4A4> No recipes uploaded yet. </font>");
+				}
+		}
+			function errorCB(err){
+		 		alert("Error" + err.code);	}
+		});
+	
+//view user profile
+		
+function ViewUser(image) {
+	
+	var url = image.src;
+	
+	var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
+	    	
+	db.transaction(function(tx){
+				tx.executeSql('SELECT * FROM userimage WHERE image=?', [url], querySuccess, errorCB);
+			});
+	
+	$.mobile.changePage( $("#viewuser"), "slide", true, true);
+	
+	function querySuccess(tx, results){
+				
+				var len = results.rows.length;
+				if(len > 0){
+					for(i = 0; i < len; i++){
+						var current_user = results.rows.item(i).username;
+						document.getElementById("viewusername").innerHTML = current_user;
+						$('#viewuserimage').attr('src', url);
+						
+					db.transaction(function(tx){
+				tx.executeSql('SELECT * FROM recipes WHERE username=?', [current_user], querySuccess2, errorCB);
+			});
+			
+			function querySuccess2(tx, results){
+				var len = results.rows.length;
+				if(len > 0){
+					for(i = 0; i < len; i++){
+						$("#viewalluserrecipes").append("<img onClick='ViewRecipe(this)' src='"+results.rows.item(i).recipe_img+"' height='200px' width='200px'>");
+					}
+				}
+				else {
+					$("#user_norecipes").append("<br><br><font color=#A4A4A4> No recipes uploaded yet. </font>");
+				}
+		}
+			function errorCB(err){
+		 		alert("Error" + err.code);	}
+						
+					}
+				}
+				else{
+					
+				}
+	}
+			
+	function errorCB(err){
+		 		alert("Error" + err.code);	}
+
+}	
+
 </script>
 
 </body>
