@@ -47,6 +47,7 @@ $('document').ready(function(){
 				
 				else{
 					console.log("No users registered yet");
+					localStorage.setItem("username", "");
 				}
 				
 		}
@@ -331,12 +332,8 @@ function newaccountpage() {
 		</table>
                 
   	<div data-role="content" class="content" align="justify">
-	  <table>
-      <tr id="alltherecipes" align="center">
-      </tr>
-	  </table>
-    		
-            <div id="norecipes" align="center"> </div> 
+      <div id="alltherecipes" align="center"> </div>
+      <div id="norecipes" align="center"> </div> 
            
   	</div>
   
@@ -474,7 +471,7 @@ function newaccountpage() {
     
    <div data-role="content" align="center" class="content">
    <br>
-   <img id="recipeimg2" src="#" height="250" width="400">
+   <img id="recipeimg2" src="#" height="250" width="300">
    <br>
    <div id="recipe2"></div>
    </div>
@@ -576,10 +573,7 @@ function newaccountpage() {
 		</table>
     
    <div data-role="content" align="justify" class="content">
-   <table>
-    <tr id="viewalluserrecipes" align="center">
-    </tr>
-	</table>
+    <div id="viewalluserrecipes" align="center"></div>
     <div id="user_norecipes" align="center"> </div> 
      
   </div> 
@@ -829,7 +823,7 @@ $('document').ready(function(){
 				if(len > 0){
 					$("#totalrecipe").append(len);
 					for(i = 0; i < len; i++){
-						$("#alltherecipes").append("<td><img onClick='ViewRecipe(this)' src='"+results.rows.item(i).recipe_img+"' height='200px' width='200px'><td>");
+						$("#alltherecipes").append("<img onClick='ViewRecipe(this)' src='"+results.rows.item(i).recipe_img+"' height='160px' width='160px'>");
 					}
 				}
 				else {
@@ -894,7 +888,7 @@ $('document').ready(function(){
 					for(i = 0; i < len; i++){
 						var current_user = results.rows.item(i).username;
 						if( current_user != username ) {
-						$("#alltheusers").append("<tr><td><img onClick='ViewUser(this)' src='"+results.rows.item(i).image+"' height='150px' width='150px'></td><td width='150px'><h2>"+results.rows.item(i).username+"</h2></td><td width='200px'><input type='button' value='Follow'></td></tr>"); }
+						$("#alltheusers").append("<tr><td><img onClick='ViewUser(this)' src='"+results.rows.item(i).image+"' height='70px' width='70px'></td><td width='100' align='center'><h2>"+results.rows.item(i).username+"</h2></td><td width='100' align='right'><a href='#' data-role='button' data-icon='plus' data-iconpos='notext'>Button</a></td></tr>"); }
 					}
 				
 				}
@@ -970,7 +964,7 @@ function ViewUser(image) {
 				if(len > 0){
 					document.getElementById("totalrecipe2").innerHTML = len
 					for(i = 0; i < len; i++){
-						$("#viewalluserrecipes").append("<td><img onClick='ViewUserRecipe(this)' src='"+results.rows.item(i).recipe_img+"' height='200px' width='200px'><td>");
+						$("#viewalluserrecipes").append("<img onClick='ViewUserRecipe(this)' src='"+results.rows.item(i).recipe_img+"' height='160px' width='160px'>");
 					}
 					
 				}
@@ -1035,6 +1029,7 @@ function ViewUserRecipe(image) {
 
 
 </script>
+
 
 </body>
 </html>
