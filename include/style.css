@@ -1,5 +1,5 @@
 .content{
-    height: 400px;
+	height:400px;
     overflow: auto;
  }
  
@@ -13,6 +13,17 @@
 	bottom: 0;
 	width: 100%;
 	background-color:#FFF;
+}
+
+.upper_panel{
+	position: fixed;
+	top: 0;
+	width: 100%;
+	background-color:#FF6820;
+}
+
+.fixed {
+	position:fixed;
 }
 
 .table{
@@ -83,6 +94,12 @@
     color: #818177;
 }
 
+.boldtext {
+	display: block;
+    font-weight: bold;
+    font-size: 20px;
+}
+
 .media-drop-placeholder-or {
     display: block;
     font-weight: normal;
@@ -120,6 +137,145 @@
     box-shadow: 0 2px 0 rgba(0, 0, 0, .2);
 }
 
+.users {
+}
 
+.notload {
+}
+
+* {
+  box-sizing: content-box;          
+}
+
+#menu-btn{
+	position: relative;
+	float: right;
+	margin-right: 15px;
+	padding: 9px 10px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	background-color: transparent;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	border-color: #333;
+}
+
+#menu-btn:hover{
+	background-color: #333;
+}
+
+#menu-btn .icon-bar{
+	background-color: #fff;
+	display: block;
+	width: 22px;
+	height: 2px;
+	border-radius: 1px;
+}
+#menu-btn .icon-bar:not(:first-child){
+	margin-top: 4px;
+}
+
+#menu-bar{
+	background-color: #BDBDBD;
+	color: #fff;
+	z-index: 1002;
+}
+.left-shadow-overlay{
+	box-shadow: 10px 0 15px 10px #585858;
+}
+#menu-bar h3{
+	background-color: #2E2E2E;
+	font-size: 1.9em;
+	padding: 20px;
+	margin: 0;
+	font-weight: 300;
+}
+#menu-bar a{
+	border-bottom: 1px solid #D8D8D8;
+	padding: 1em;
+	display: block;
+	color: #424242;
+	font-size: 1.4em;
+	font-weight: 300;
+	text-decoration: none;
+}
+#menu-bar a:hover{
+	background-color: #D8D8D8;
+}
+#menu-bar .handle{
+  background-color: transparent;
+  left: -60px;
+  padding: 10px; 8px;
+  position: absolute;
+  top: 0px;
+  width: 20px;
+  cursor: pointer;
+  /*margin-top: -20px;*/
+	/*-moz-transition: 200ms ease all;
+	-webkit-transition: 200ms ease all;
+  -o-transition: 200ms ease all;
+  transition: 200ms ease all;*/
+}
+#menu-bar .handle:hover{
+  /*left: -46px;
+  width: 30px;*/
+}
+#download-bar{
+	background-color: #E6E6E6;
+	padding: 10px;
+	box-shadow: -10px 0 15px -6px #585858 inset;
+}
+
+#download-bar div.well{
+	margin-top: 10px;
+}
+
+.side-panel{
+	background-color: #E6E6E6;
+	padding: 10px;
+}
+
+.side-panel-left{
+	box-shadow: -5px 0 15px -6px #585858 inset;
+}
+.side-panel-left-overlay{
+	box-shadow: -10px 0 15px 10px #585858;
+}
+.side-panel-right{
+	box-shadow: 5px 0 15px -6px #585858 inset;
+}
+
+.jumbotron{
+	margin-bottom: 0px;
+}
+
+.navbar{
+	border-radius: 0px;
+	margin-bottom: 0px;
+}
+
+section{
+	padding-top: 20px;
+}
+
+section:last-child{
+	margin-bottom: 30px;
+}
+#sample-1-btn{
+	margin-bottom: 10px;
+}
+
+#sample-1 .panel{
+	margin-top: 10px;
+}
+
+footer{
+	padding: 20px;
+	margin-top: 30px;
+	background-color: #eee;
+	color: #333;
+	border-top: 1px #ccc solid;
+}
 
 

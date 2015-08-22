@@ -8,12 +8,18 @@
 <link rel="stylesheet" type="text/css" href="include/style.css">
 <link href="jquery-mobile/jquery.mobile-1.0.min.css" rel="stylesheet" type="text/css"/>
 <link rel="stylesheet" href="sweetalert/sweetalert.css">
+<!-- link rel="stylesheet" href="include/bootstrap.min.css" -->
 
 <script src="jquery-mobile/jquery-1.6.4.min.js" type="text/javascript"></script>
 <script src="jquery-mobile/jquery.mobile-1.0.min.js" type="text/javascript"></script>
 <script src="sweetalert/sweetalert-dev.js"></script>
+<!--
+<script src="jquery-mobile/jquery.js"></script>
+-->
+<script src="jquery-mobile/slidereveal.js"></script>
 
 <script>
+
 //added some lines
  var db = null;
  var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
@@ -119,8 +125,19 @@ else {
         <img src="images/icon/DeliCookTitle.png" width="300" height="120">
         <p>&nbsp;</p>
         <p>&nbsp;</p>
-        <a href="#login"> <button>Login</button> </a>
-		<a href="#signup"> <button>New Account</button> </a>
+        <button onClick="loginpage()">Login</button>
+		<button onClick="newaccountpage()">New Account</button>
+        
+<script>
+
+function loginpage() {
+	$.mobile.changePage( $("#login"), "slide", true, true);
+}
+
+function newaccountpage() {
+	$.mobile.changePage( $("#signup"), "slide", true, true);
+}
+</script>        
       	
     	
 	</div>
@@ -276,18 +293,30 @@ else {
 
 	<div data-role="header">
     <table>
-    <tr> <td rowspan="2"> <img src="#" id="pic" width="71px" height="68px"> </td> 
-    </tr>
-    <tr> <td rowspan="2"> <div id="p_usrname"> </div> </td> </tr>
+      <tr> <td rowspan="2"> <img src="#" id="pic" width="71px" height="68px"> </td> 
+      </tr>
+      <tr> <td rowspan="2"> <div id="p_usrname"> </div> </td></tr>
     </table>
+    
     </div>
     
-	<div>
-    	<div>
-		<table width="100%" class="table" align="center">
+    <div id="menu-bar">
+      <div class="handle">
+        <span> <img src="images/icon/left arrow.png" width="46" height="44"> </span>
+      </div>
+      <h3> Menu <br/>
+      </h3>
+      <a href="#" onClick="addnew()">+  New Recipe</a>
+      <a href="#">How to use</a>
+      <a href="#people">People</a>
+      <a href="#" onClick="logOutSession()">Log Out</a>
+    </div>
+    
+    
+  		<table width="100%" class="table" align="center">
 
 		<tr>
-		<td> <font size="+2">14</font> </td>
+		<td> <font size="+2" id="totalrecipe"></font> </td>
 		<td> <font size="+2">69</font> </td>
 		<td> <font size="+2">158</font> </td>
 		<td> <font size="+2">3</font> </td>
@@ -300,22 +329,24 @@ else {
 		<td> groups </td>
 		</tr>
 		</table>
-	</div>
-  
-  
+                
   	<div data-role="content" class="content" align="justify">
-    <div align="center"> <button id="addnew"> + new recipe </button> </div>
-    <div id="alltherecipes" align="center"> </div>
-    <div id="norecipes" align="center"> </div> 
-    <h2 onClick="logOutSession()"> Log out </h2>
-    <a href="#people"> <h2> People page </h2> </a>
+	  <table>
+      <tr id="alltherecipes" align="center">
+      </tr>
+	  </table>
+    		
+            <div id="norecipes" align="center"> </div> 
+           
   	</div>
+  
     
     <script>
 	function logOutSession() {
 		
 	swal({   
-		title: "Are you sure?",     
+		title: "Log Out",
+		text:"Are you sure?",     
 		type: "warning",   
 		showCancelButton: true,   
 		confirmButtonColor: "#DD6B55",   
@@ -350,7 +381,6 @@ else {
   	</table>
   	</div>
 
-	</div>
 </div>
 
 <!--- End of profile page --->
@@ -365,13 +395,17 @@ else {
     </tr>
     <tr> <td rowspan="2"> <div id="title"> </div> </td> </tr>
     </table>
+    <img src="images/icon/logout icon 3.png" width="46" height="44"class="ui-btn-right" onClick="logOutSession()">
     </div>
+	
+    
+   	
     
     
    <div data-role="content" align="center" class="content">	
    <!-- <input type="text" id="recipe_title" placeholder="Recipe Name"> -->
 	<div id="dropbox" class="media-drop-placeholder" style="width: 300px; height: 100px">
-    <img id="recipeimg" src="#" height="150px" width="250px"/>
+    <img id="recipeimg" src="#" height="200px" width="300px"/>
     <span class="media-drop-placeholder-title">
     <form id="addrecipeform" runat="server">
     <input type='file' id="up_recipeimg" /></form></span>
@@ -433,19 +467,36 @@ else {
     <table>
     <tr> <td rowspan="2"> <img src="images/icon/Final logo DeliCook.JPG" width="71" height="68"> </td> 
     </tr>
-    <tr> <td rowspan="2"> </td> </tr>
+    <tr> <td rowspan="2"><h2 id="recipe_title2"></h2> </td> </tr>
     </table>
+    <img src="images/icon/logout icon 3.png" width="46" height="44"class="ui-btn-right" onClick="logOutSession()">
     </div>
     
    <div data-role="content" align="center" class="content">
-   <h1> <div id="recipe_title2"></div> </h1>
    <br>
-   <img id="recipeimg2" src="#" height="200px" width="300px">
+   <img id="recipeimg2" src="#" height="250" width="400">
    <br>
    <div id="recipe2"></div>
-     	
-     
-  </div>  
+   </div>
+    	
+    <div id="panel" class="panel"> 
+  	<table width="100%">
+  	<tr>
+  	<td align="center">
+  	<img src="images/icon/home icon.png" width="57" height="57">
+  	</td>  
+  	<td align="center">
+  	<img src="images/icon/Contact-icon.png" width="57" height="57">
+ 	</td>
+  	<td align="center">
+  	<img src="images/icon/food_dining_icon.png" width="57" height="57">
+  	</td>
+  	<td align="center"> <a href="#people"> <img src="images/icon/people-icon.png" width="57" height="57"> </a>
+  	</td>
+  	</tr>
+  	</table>
+  	</div>
+      
 </div>
 
 <!--- End of viewrecipe page --->
@@ -460,14 +511,36 @@ else {
     </tr>
     <tr> <td rowspan="2"> </td> </tr>
     </table>
+    <img src="images/icon/logout icon 3.png" width="46" height="44"class="ui-btn-right" onClick="logOutSession()">
     </div>
+    
     
     <div data-role="content" align="center">
     <table id="alltheusers" class="table">
     </table>  	
     	
 	</div>
+    
+    <div id="panel" class="panel"> 
+  	<table width="100%">
+  	<tr>
+  	<td align="center">
+  	<img src="images/icon/home icon.png" width="57" height="57">
+  	</td>  
+  	<td align="center">
+  	<img src="images/icon/Contact-icon.png" width="57" height="57">
+ 	</td>
+  	<td align="center">
+  	<img src="images/icon/food_dining_icon.png" width="57" height="57">
+  	</td>
+  	<td align="center"> <a href="#people"> <img src="images/icon/people-icon.png" width="57" height="57"> </a>
+  	</td>
+  	</tr>
+  	</table>
+  	</div>
+    
 </div>
+
 
 <!--- End of people page --->
 
@@ -482,13 +555,52 @@ else {
     </tr>
     <tr> <td rowspan="2"> <h2 id="viewusername"></h2> </td> </tr>
     </table>
+    <img src="images/icon/logout icon 3.png" width="46" height="44"class="ui-btn-right" onClick="logOutSession()">
     </div>
     
-   <div data-role="content" align="center" class="content">
-   <div id="viewalluserrecipes" align="center"> </div>
+    <table width="100%" class="table" align="center">
+
+		<tr>
+		<td> <font size="+2" id="totalrecipe2"></font> </td>
+		<td> <font size="+2">69</font> </td>
+		<td> <font size="+2">158</font> </td>
+		<td> <font size="+2">3</font> </td>
+		</tr>
+
+		<tr>
+		<td> recipes </td>
+		<td> followers </td>
+		<td> following </td>
+		<td> groups </td>
+		</tr>
+		</table>
+    
+   <div data-role="content" align="justify" class="content">
+   <table>
+    <tr id="viewalluserrecipes" align="center">
+    </tr>
+	</table>
     <div id="user_norecipes" align="center"> </div> 
      
-  </div>  
+  </div> 
+  
+  <div id="panel" class="panel"> 
+  	<table width="100%">
+  	<tr>
+  	<td align="center">
+  	<img src="images/icon/home icon.png" width="57" height="57">
+  	</td>  
+  	<td align="center">
+  	<img src="images/icon/Contact-icon.png" width="57" height="57">
+ 	</td>
+  	<td align="center">
+  	<img src="images/icon/food_dining_icon.png" width="57" height="57">
+  	</td>
+  	<td align="center"> <a href="#people"> <img src="images/icon/people-icon.png" width="57" height="57"> </a>
+  	</td>
+  	</tr>
+  	</table>
+  	</div> 
 </div>
 
 <!--- End of viewuser page --->
@@ -496,6 +608,32 @@ else {
 
 
 <script>
+
+//menubar option panel
+
+$("#menu-bar a").click(function(){
+          var id = $(this).attr("href").substring(1);
+          $("html, body").animate({ scrollTop: $("#"+id).offset().top }, 1000, function(){
+            $("#menu-bar").slideReveal("hide");
+          });
+        });
+
+        var slider = $("#menu-bar").slideReveal({
+          // width: 100,
+          push: false,
+          position: "right",
+          // speed: 600,
+          trigger: $(".handle"),
+          autoEscape: false,
+          shown: function(obj){
+            obj.find(".handle").html('<span> <img src="images/icon/right arrow.png" width="46" height="44"> </span>');
+            obj.addClass("left-shadow-overlay");
+          },
+          hidden: function(obj){
+            obj.find(".handle").html('<span> <img src="images/icon/left arrow.png" width="46" height="44"> </span>');
+            obj.removeClass("left-shadow-overlay");
+          }
+});
 
 $("#signupbtn").click(function(){
 	var email = $("#email").val();
@@ -615,7 +753,7 @@ $('document').ready(function(){
 
 //adding new recipe
 
-$("#addnew").click(function(){
+function addnew(){
 	var username = localStorage.getItem('username');
 	$.mobile.changePage( $("#addrecipe"), "slide", true, true);
 	swal({  title: "New recipe",
@@ -673,7 +811,7 @@ $("#addnew").click(function(){
 });
 					
 	});
-});
+}
 
 
 //diplaying all uploaded recipes
@@ -689,11 +827,13 @@ $('document').ready(function(){
 			function querySuccess(tx, results){
 				var len = results.rows.length;
 				if(len > 0){
+					$("#totalrecipe").append(len);
 					for(i = 0; i < len; i++){
-						$("#alltherecipes").append("<img onClick='ViewRecipe(this)' src='"+results.rows.item(i).recipe_img+"' height='200px' width='200px'>");
+						$("#alltherecipes").append("<td><img onClick='ViewRecipe(this)' src='"+results.rows.item(i).recipe_img+"' height='200px' width='200px'><td>");
 					}
 				}
 				else {
+					$("#totalrecipe").append(len);
 					$("#norecipes").append("<br><br><font color=#A4A4A4> No recipes uploaded yet. </font>");
 				}
 		}
@@ -738,7 +878,7 @@ function ViewRecipe(image) {
 }
 
 //displaying all users
-
+	
 $('document').ready(function(){
 			var username = localStorage.getItem('username');
 			var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
@@ -746,6 +886,7 @@ $('document').ready(function(){
 			db.transaction(function(tx){
 				tx.executeSql('SELECT * FROM userimage', [], querySuccess, errorCB);
 			});
+			
 			
 			function querySuccess(tx, results){
 				var len = results.rows.length;
@@ -758,16 +899,42 @@ $('document').ready(function(){
 				
 				}
 				else {
-					$("#norecipes").append("<br><br><font color=#A4A4A4> No recipes uploaded yet. </font>");
 				}
 		}
 			function errorCB(err){
 		 		alert("Error" + err.code);	}
 		});
+
 	
 //view user profile
 		
 function ViewUser(image) {
+	
+	$('.users').click(function(e) {
+    var index = $('.users').index(this) + 1;
+    
+    var obj = {
+        index: index
+    };
+    
+    window.history.pushState(obj, $(this).text(), "/" + index);
+    
+    e.preventDefault();
+	});
+	
+	
+	$(window).bind("popstate", function(e) {
+    	var state = e.originalEvent.state;
+    
+    	if(state) {
+        	window.location.reload();
+    	} else {
+        	//window.location.reload();
+    }
+	});
+	
+	
+	$.mobile.changePage( $("#viewuser"), "slide", true, true);
 	
 	var url = image.src;
 	
@@ -777,7 +944,7 @@ function ViewUser(image) {
 				tx.executeSql('SELECT * FROM userimage WHERE image=?', [url], querySuccess, errorCB);
 			});
 	
-	$.mobile.changePage( $("#viewuser"), "slide", true, true);
+	
 	
 	function querySuccess(tx, results){
 				
@@ -785,26 +952,71 @@ function ViewUser(image) {
 				if(len > 0){
 					for(i = 0; i < len; i++){
 						var current_user = results.rows.item(i).username;
-						document.getElementById("viewusername").innerHTML = current_user;
+						localStorage.setItem("current_user", current_user);
+						var view_current_user = localStorage.getItem('current_user');
+						document.getElementById("viewusername").innerHTML = view_current_user;
 						$('#viewuserimage').attr('src', url);
 						
-					db.transaction(function(tx){
-				tx.executeSql('SELECT * FROM recipes WHERE username=?', [current_user], querySuccess2, errorCB);
-			});
+					}
+					
+				//view all recipes for current user viewed
+				
+				db.transaction(function(tx){
+							tx.executeSql('SELECT * FROM recipes WHERE username=?', [view_current_user], querySuccess2, errorCB2);
+						});
 			
 			function querySuccess2(tx, results){
 				var len = results.rows.length;
 				if(len > 0){
+					document.getElementById("totalrecipe2").innerHTML = len
 					for(i = 0; i < len; i++){
-						$("#viewalluserrecipes").append("<img onClick='ViewRecipe(this)' src='"+results.rows.item(i).recipe_img+"' height='200px' width='200px'>");
+						$("#viewalluserrecipes").append("<td><img onClick='ViewUserRecipe(this)' src='"+results.rows.item(i).recipe_img+"' height='200px' width='200px'><td>");
 					}
+					
 				}
 				else {
-					$("#user_norecipes").append("<br><br><font color=#A4A4A4> No recipes uploaded yet. </font>");
+					document.getElementById("totalrecipe2").innerHTML = len
+					document.getElementById("user_norecipes").innerHTML = "<br><br><font color=#A4A4A4> No recipes uploaded yet. </font>"
 				}
 		}
-			function errorCB(err){
+			function errorCB2(err){
 		 		alert("Error" + err.code);	}
+				
+				}
+				else{
+					
+				}
+	}
+			
+	function errorCB(err){
+		 		alert("Error" + err.code);	}
+
+}	
+
+
+//view user full recipe
+		
+function ViewUserRecipe(image) {
+	
+	var username = localStorage.getItem('current_user');
+	var url = image.src;
+	
+	var db = openDatabase('delicook', '1', 'delicook', 2 * 1024 * 1024);
+	    	
+	db.transaction(function(tx){
+				tx.executeSql('SELECT * FROM recipes WHERE username=? AND recipe_img=?', [username,url], querySuccess, errorCB);
+			});
+	
+	$.mobile.changePage( $("#viewrecipe"), "slide", true, true);
+	
+	function querySuccess(tx, results){
+				
+				var len = results.rows.length;
+				if(len > 0){
+					for(i = 0; i < len; i++){
+						document.getElementById("recipe_title2").innerHTML = results.rows.item(i).title;
+						$('#recipeimg2').attr('src', url);
+						document.getElementById("recipe2").innerHTML = results.rows.item(i).recipe;
 						
 					}
 				}
@@ -816,7 +1028,11 @@ function ViewUser(image) {
 	function errorCB(err){
 		 		alert("Error" + err.code);	}
 
-}	
+}
+
+
+
+
 
 </script>
 
