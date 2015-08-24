@@ -100,7 +100,7 @@ else {
         <p>&nbsp;</p>
         <p>&nbsp;</p>
         <h2 onClick="checkSession()"> Tap to Enter </h2>
-        <a href="#index"> <h2> index </h2> </a>
+        <!-- a href="#index"> <h2> index </h2> </a -->
       	
     	
 	</div>
@@ -179,7 +179,7 @@ function newaccountpage() {
     	 <input type="button" id="loginbtn" value="Login">
          </form>
      
-     <a href="#profile"> profile </a>
+     <!-- a href="#profile"> profile </a -->
      
   </div>  
 </div>
@@ -222,7 +222,7 @@ function newaccountpage() {
      	<input name="signupbtn" type="button" id="signupbtn" value="Sign Up">
         
         
-        <a href="#signup2"> Sign up 2 </a>
+        <!-- a href="#signup2"> Sign up 2 </a -->
      
   </div>  
 </div>
@@ -243,22 +243,22 @@ function newaccountpage() {
     </div>
     
     <div data-role="content" align="center">
-	<div id="dropbox" class="media-drop-placeholder" style="width: 250px; height: 250px">
-    
-    <img id="profilepic" src="#" height="200px" width="200px" />
-    
+	<div id="dropbox" class="media-drop-placeholder" style="width: 300px; height: 250px">
     <span class="media-drop-placeholder-title">Upload profile picture</span>
+    <br>
+    <img id="profilepic" src="#" height="250px" width="250px" />
+    
+    <span class="media-drop-placeholder-title"> <form id="form1" runat="server">
+    <input type='file' id="imgInp" />
+    </form></span>
 
     </div>
     
     <br>
-    <form id="form1" runat="server">
-    <input type='file' id="imgInp" />
-    </form>
     
  	<input type="button" id="uploadprofilepic" value="Register"> 
     
-    <a href="#profile">Profile</a>
+    <!-- a href="#profile">Profile</a -->
 	
 
     <script>
@@ -332,7 +332,7 @@ function newaccountpage() {
 		</table>
                 
   	<div data-role="content" class="content" align="justify">
-      <div id="alltherecipes" align="center"> </div>
+      <div id="alltherecipes" align="justify"> </div>
       <div id="norecipes" align="center"> </div> 
            
   	</div>
@@ -506,7 +506,7 @@ function newaccountpage() {
     <table>
     <tr> <td rowspan="2"> <img src="images/icon/Final logo DeliCook.JPG" width="71" height="68"> </td> 
     </tr>
-    <tr> <td rowspan="2"> </td> </tr>
+    <tr> <td rowspan="2"><h2> People </h2> </td> </tr>
     </table>
     <img src="images/icon/logout icon 3.png" width="46" height="44"class="ui-btn-right" onClick="logOutSession()">
     </div>
@@ -629,6 +629,8 @@ $("#menu-bar a").click(function(){
           }
 });
 
+//sign up event...........
+
 $("#signupbtn").click(function(){
 	var email = $("#email").val();
 	var password = $("#password").val();
@@ -686,6 +688,7 @@ $("#signupbtn").click(function(){
 		
 });
 
+//login event.........
 
 $("#loginbtn").click(function(){
 	var username = $("#loginusername").val();
@@ -904,7 +907,7 @@ $('document').ready(function(){
 		
 function ViewUser(image) {
 	
-	$('.users').click(function(e) {
+	/*$('.users').click(function(e) {
     var index = $('.users').index(this) + 1;
     
     var obj = {
@@ -925,10 +928,7 @@ function ViewUser(image) {
     	} else {
         	//window.location.reload();
     }
-	});
-	
-	
-	$.mobile.changePage( $("#viewuser"), "slide", true, true);
+	});*/
 	
 	var url = image.src;
 	
@@ -938,8 +938,6 @@ function ViewUser(image) {
 				tx.executeSql('SELECT * FROM userimage WHERE image=?', [url], querySuccess, errorCB);
 			});
 	
-	
-	
 	function querySuccess(tx, results){
 				
 				var len = results.rows.length;
@@ -947,46 +945,48 @@ function ViewUser(image) {
 					for(i = 0; i < len; i++){
 						var current_user = results.rows.item(i).username;
 						localStorage.setItem("current_user", current_user);
-						var view_current_user = localStorage.getItem('current_user');
-						document.getElementById("viewusername").innerHTML = view_current_user;
-						$('#viewuserimage').attr('src', url);
-						
+						localStorage.setItem("current_userimg", url);
+						$.mobile.changePage( $("#viewuser"), "slide", true, true);
+						window.location.reload();
 					}
-					
-				//view all recipes for current user viewed
-				
-				db.transaction(function(tx){
-							tx.executeSql('SELECT * FROM recipes WHERE username=?', [view_current_user], querySuccess2, errorCB2);
-						});
-			
-			function querySuccess2(tx, results){
-				var len = results.rows.length;
-				if(len > 0){
-					document.getElementById("totalrecipe2").innerHTML = len
-					for(i = 0; i < len; i++){
-						$("#viewalluserrecipes").append("<img onClick='ViewUserRecipe(this)' src='"+results.rows.item(i).recipe_img+"' height='160px' width='160px'>");
-					}
-					
-				}
-				else {
-					document.getElementById("totalrecipe2").innerHTML = len
-					document.getElementById("user_norecipes").innerHTML = "<br><br><font color=#A4A4A4> No recipes uploaded yet. </font>"
-				}
-		}
-			function errorCB2(err){
-		 		alert("Error" + err.code);	}
-				
-				}
-				else{
-					
 				}
 	}
 			
 	function errorCB(err){
 		 		alert("Error" + err.code);	}
+				
+}
 
-}	
+//view all recipes for current user viewed
 
+$('document').ready(function(){
+	
+	var view_current_user = localStorage.getItem('current_user');
+	var url = localStorage.getItem('current_userimg');
+	$('#viewuserimage').attr('src', url);
+
+db.transaction(function(tx){
+		tx.executeSql('SELECT * FROM recipes WHERE username=?', [view_current_user], querySuccess2, errorCB2);
+		});
+			
+function querySuccess2(tx, results){
+	var len = results.rows.length;
+	if(len > 0){
+		document.getElementById("totalrecipe2").innerHTML = len
+		for(i = 0; i < len; i++){
+		$("#viewalluserrecipes").append("<img onClick='ViewUserRecipe(this)' src='"+results.rows.item(i).recipe_img+"' height='160px' width='160px'>");
+		}
+	}
+	else {
+		document.getElementById("totalrecipe2").innerHTML = len
+		document.getElementById("user_norecipes").innerHTML = "<br><br><font color=#A4A4A4> No recipes uploaded yet. </font>"
+	}
+}
+			
+function errorCB2(err){
+		alert("Error" + err.code);	}
+				
+});
 
 //view user full recipe
 		
