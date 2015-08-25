@@ -107,7 +107,7 @@ else {
         <p>&nbsp;</p>
         <p>&nbsp;</p>
         <h2 onClick="checkSession()"> Tap to Enter </h2>
-        <!-- a href="#index"> <h2> index </h2> </a -->
+        <!-- a href="#explore"> <h2> index </h2> </a -->
       	
     	
 	</div>
@@ -308,7 +308,7 @@ function newaccountpage() {
     <table>
       <tr> <td rowspan="2"> <img src="#" id="pic" width="71px" height="68px"> </td> 
       </tr>
-      <tr> <td rowspan="2"> <div id="p_usrname"> </div> </td></tr>
+      <tr> <td rowspan="2"> &emsp; <font size="+3" id="p_usrname"> </font> <font size="-1"> total recipe : </font> <font id="totalrecipe"> </font> </td></tr>
     </table>
     
     </div>
@@ -320,28 +320,10 @@ function newaccountpage() {
       <h3> Menu <br/>
       </h3>
       <a href="#" onClick="addnew()">+  New Recipe</a>
-      <a href="#">How to use</a>
       <a href="#people">People</a>
       <a href="#" onClick="logOutSession()">Log Out</a>
     </div>
     
-    
-  		<table width="100%" class="table" align="center">
-
-		<tr>
-		<td> <font size="+2" id="totalrecipe"></font> </td>
-		<td> <font size="+2">69</font> </td>
-		<td> <font size="+2">158</font> </td>
-		<td> <font size="+2">3</font> </td>
-		</tr>
-
-		<tr>
-		<td> recipes </td>
-		<td> followers </td>
-		<td> following </td>
-		<td> groups </td>
-		</tr>
-		</table>
                 
   	<div data-role="content" class="content" align="justify">
       <div id="alltherecipes" align="justify"> </div>
@@ -412,15 +394,15 @@ function newaccountpage() {
    	
     
     
-   <div data-role="content" align="center" class="content">	
+   <div data-role="content" align="center">	
 	<div id="dropbox" class="media-drop-placeholder" style="width: 300px; height: 100px">
-    <img id="recipeimg" src="#" height="200px" width="300px"/>
+    <img id="recipeimg" src="images/icon/defaultrecipe.png" height="200px" width="300px"/>
     <span class="media-drop-placeholder-title">
     <form id="addrecipeform" runat="server">
     <input type='file' id="up_recipeimg" /></form></span>
     </div>
     <br>
-    <textarea cols="40" rows="8" name="recipe" id="recipe" placeholder="Type in your recipe here.."></textarea>
+    <textarea style="width: 300px; height: 150px; max-width: 300px; max-height: 150px;" name="recipe" id="recipe" placeholder="Type in your recipe here.."></textarea>
     <input type="button" id="addrecipebutton" value="Submit">
     <br>
     
@@ -615,6 +597,7 @@ function newaccountpage() {
     <div data-role="content" align="center">
     <font size="+1" color="#999999">Choose category of cooking tips you want to view </font>
     <br>
+    <br>
     <table>
     <tr>
     <td colspan="3"></td>
@@ -773,7 +756,7 @@ function newaccountpage() {
     
     
     <div data-role="content" align="center">	
-    <table id="homerecipes" align="center">
+    <table id="homerecipes" align="center" width="305">
     </table>	
 	</div>
     
@@ -801,8 +784,74 @@ function newaccountpage() {
 
 <!--- End of home page --->
 
+<!--- Start of explore page --->
+
+<div data-role="page" id="explore">
+	
+    <div data-role="header">
+    <table>
+    <tr> <td rowspan="2"> <img src="images/icon/Final logo DeliCook.JPG" width="71" height="68"> </td> 
+    </tr>
+    <tr> <td rowspan="2"><h2> Explore </h2> </td> </tr>
+    </table>
+    <img src="images/icon/logout icon 4.png" width="46" height="44"class="ui-btn-right" onClick="logOutSession()">
+    </div>
+    
+    
+    <!-- div id="slider2"> 
+      <div class="handle">
+      	<span> <img src="images/icon/left arrow.png" width="46" height="44"> </span>
+      </div>
+      <h3> Search for.. <br/></h3>
+    	<a href="#" id="crecipe">Recipe</a>
+      	<a href="#" id="ctips">Tips</a>
+      	<a href="#" id="cpeople">People</a>
+    </div>    
+    <script>
+	$('#slider2').slideReveal({
+		trigger: $(".handle"),
+		position: "right",
+		push: false
+	});
+	</script -->
+    
+    
+    <div data-role="content" align="center">
+    <table align="center">
+    <tr>
+    <td><input id="searchinput" type="text" placeholder="search" style="width:200px;"></td>
+    <td><img id="searchbtn" src="images/icon/search button.png" width="46" height="44"></td>
+    </tr>
+    </table>
+    
+    <table id="explorepost" align="center" width="305">
+    </table>
+    <div id="no_result"></div>	
+	</div>
+    
+    <div id="panel" class="panel"> 
+  	<table width="100%">
+  	<tr>
+  	<td align="center">
+  	<a href="#home"> <img src="images/icon/home icon 2.png" width="57" height="57"> </a>
+  	</td>  
+  	<td align="center">
+  	<a href="#profile"> <img src="images/icon/Contact-icon 2.png" width="57" height="57"> </a>
+ 	</td>
+  	<td align="center">
+  	<a href="#tips"> <img src="images/icon/food_dining_icon 2.png" width="57" height="57"> </a>
+  	</td>
+  	<td align="center"> 
+    <a href="#explore"> <img src="images/icon/search button.png" width="57" height="57"> </a>
+  	</td>
+  	</tr>
+  	</table>
+  	</div>
+    
+</div>
 
 
+<!--- End of explore page --->
 
 <script>
 
@@ -831,6 +880,7 @@ $("#menu-bar a").click(function(){
             obj.removeClass("left-shadow-overlay");
           }
 });
+
 
 $('#slider').slideReveal({
    	      width: 275,
@@ -961,7 +1011,7 @@ $('document').ready(function(){
 					for(i = 0; i < len; i++){
 						var url = results.rows.item(i).image;
 						$('#pic').attr('src', url);
-						$("#p_usrname").append("<h2>"+results.rows.item(i).username)+"</h2>";
+						$("#p_usrname").append("<font size='+3'>"+results.rows.item(i).username)+"</font>";
 					}
 				}
 		}
@@ -1545,6 +1595,44 @@ function ViewTips() {
 		 		alert("Error" + err.code);	}
 
 }
+
+//search function
+
+
+$("#searchbtn").click(function(){
+	
+	var search_keyword = $("#searchinput").val();
+	localStorage.setItem("search_keyword", search_keyword);
+	window.location.reload();
+});
+	
+$('document').ready(function(){
+	var search_keyword = localStorage.getItem('search_keyword');
+	
+	db.transaction(function(tx){
+				tx.executeSql('SELECT * FROM recipes WHERE title=?', [search_keyword], querySuccess, errorCB);
+			});
+	
+	function querySuccess(tx, results){
+				var len = results.rows.length;
+				if(len > 0){
+					for(i = 0; i < len; i++){
+						$("#explorepost").append("<tr><td><font size='+3'>"+results.rows.item(i).title+"</font><font size='-1'> by "+results.rows.item(i).username+"</font></td></tr><tr><td><img onClick='ViewUserHomeRecipe(this)' src='"+results.rows.item(i).recipe_img+"' height='250' width='305'></td></tr><tr><td><font size='-1'>"+results.rows.item(i).timestamp+"</font><br><font color='#BDBDBD'>_____________________________________________</font><p>&nbsp;</p></td></tr>");
+						
+					}
+				}
+				else {
+					
+					document.getElementById("no_result").innerHTML = "<br><br><font color=#A4A4A4> No result. </font>"
+					
+				}
+		}
+			function errorCB(err){
+		 		alert("Error" + err.code);	}
+
+	
+});
+
 
 
 </script>
